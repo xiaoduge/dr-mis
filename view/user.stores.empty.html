@@ -1,0 +1,25 @@
+{{ define "content" }}
+<div class="customlayout">
+    <h1 class="pagetitle">门店信息</h1>
+    <div class="customize">
+        <div class="description">
+            <p class="description-text">抱歉! 没有获取到您附近的门店信息</p>
+            <p class="description-text">可能是系统没能成功获取您的位置</p>
+            <p class="description-text">您可以尝试手动输入您的地址重新查询</p>
+        </div>
+
+        <form action="/api/storeinfo/v1/address" method="GET" enctype="multipart/form-data">
+            <div class="info">
+                <label for="address">地址:</label>
+                <input type="text" name="address" placeholder="辽宁省阜新市彰武县大冷乡蛤蟆屯" required="required">
+
+                <input name="city" value="{{ .City }}" type="hidden">
+                <input name="tag" value="{{ .Tag }}" type="hidden" >
+            </div>
+            <div class="">
+                <input type="submit" name="submit" value="查询">
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,64 @@
+{{ define "content" }}
+<div class="modifylayout can-scroll">
+    <h1 class="pagetitle">信息修改</h1>
+    <div class="modify">
+        <form name="modify-form" action="/modify-storeinfo" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
+            <!-- 医生信息的话 是姓名  职称  热线电话  地址 -->
+            <div class="info">
+                <label for="name">编号:</label>
+                <input type="text" name="storeid" placeholder="id" readonly>
+            </div>
+            <div class="info">
+                <label for="name">名称:</label>
+                <input type="text" name="storename" placeholder="名称">
+            </div>
+            <div class="info">
+                <label for="phone">电话:</label>
+                <input type="text" name="phone" placeholder="电话">
+            </div>
+            <div class="info">
+                <label for="province">省份:</label>
+                <select name="province" id="provinces" onchange="show_city(this.options[this.options.selectedIndex])">
+                </select>
+                <input type="button" value="修改" class="edit-region" onclick="editProvince()">
+            </div>
+
+            <div class="info">
+                <label for="city">城市:</label>
+                <select name="city" id="citys" onchange="show_county(this.options[this.options.selectedIndex])">
+                </select>
+                <input type="button" value="修改" class="edit-region" onclick="editCity()">
+            </div>
+
+            <div class="info">
+                <label for="county">区县:</label>
+                <select name="county" id="countys">
+                </select>
+                <input type="button" value="修改" class="edit-region" onclick="editCounty()">
+            </div>
+            <div class="info">
+                <label for="address">地址:</label>
+                <input type="text" name="address" placeholder="详细地址">
+            </div>
+            <div class="info">
+                <label for="tag">类别:</label>
+                <input type="text" name="tag" placeholder="类别">
+            </div>
+            <div class="info el-center">
+                <input type="file" name="image"> 
+            </div>
+            <div class="buttonarea">
+                <input type="button" value="查询" onclick="queryStore()">
+                <input type="button" value="更新" onclick="submitStore()">
+                <input type="button" value="删除" onclick="deleteStore()">
+            </div>
+            <div class="respond-msg">
+                <p>{{ . }}</p>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script src="../static/js/modify-store.js"></script>
+<script src="../static/js/address.js"></script>
+{{ end }}

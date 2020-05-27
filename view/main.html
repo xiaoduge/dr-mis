@@ -1,0 +1,23 @@
+{{ define "main" }}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/login.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" rel="stylesheet" type="text/css">
+    <title>DR-MIS</title>
+</head>
+<body>
+    <div class="bgimg">
+        <div class="container">
+            {{ template "content" . }}
+        </div> 
+        {{ template "tabbar" . }}
+    </div>
+    
+    <script src="../static/js/jquery-3.5.1.min.js"></script>
+</body>
+
+</html>
+
+{{ end }}

@@ -1,0 +1,22 @@
+{{ define "content" }}
+<div class="viewlayout can-scroll">
+    <h1 class="pagetitle">门店信息</h1>
+    <ul class="view-list">
+        {{ range . }}
+        <li class="view-item">
+            <div class="store-img">
+                <img src="../static/uploads/{{ .Image }}" alt="门店图片">
+            </div>
+            <div class="store-info">
+                <p>{{ .Name }}</p>
+                <p>{{ .Phone }}</p>
+                <p>{{ .Address}}</p>
+            </div>
+            <div class="distanceinfo">
+                <!-- <p>100m</p> -->
+            </div>
+        </li>
+        {{ end }}
+    </ul>
+</div>
+{{ end }}

@@ -1,0 +1,27 @@
+{{ define "content" }}
+<div class="rewardlayout">
+    <h1 class="rewardtitle">奖品信息</h1>
+    <div class="can-scroll">
+        <ul class="view-list">
+            {{ range .List }}
+            <li>
+                <div class="prize-info">
+                    <div class="infotext">
+                        <p>{{ .PrizeName }}</p>
+                        <p>{{ .Time }}</p>
+                    </div>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+    <div class="reward">
+        <form action="/collectprize" method="POST" enctype="application/x-www-form-urlencoded">
+            <input name="usercode" value="{{ .UserCode }}"  type="hidden">
+            <div>
+                <input type="submit" name="submit" value="领取">
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

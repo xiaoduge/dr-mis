@@ -1,0 +1,14 @@
+{{ define "content" }}
+<div class="showcodelayout">
+    <h1 class="codetitle">领奖码</h1>
+    <div class="code-area">
+        {{ if .Valid }}
+        <p>您的领奖码</p>
+        <p class="usercode-text">{{ .UserCode }}</p>
+        {{ else }}
+        <p>还没有领奖码哦！</p>
+        <p>加油哦！</p>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

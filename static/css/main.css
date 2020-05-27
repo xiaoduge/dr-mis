@@ -1,0 +1,528 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+html, body{
+    width: 100%;
+    height: 100%;
+}
+
+.bgimg{
+    width: 100%;
+    height: 100%;
+    background: url("../images/background.png") no-repeat center center fixed;
+    background-size: 100%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.can-scroll{
+    overflow: auto;
+}
+
+.pagetitle{
+    border-bottom: 2px solid gray;
+    text-align: center;
+    width: 90%;
+    padding: 5px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+input[type="text"], input[type="password"]{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 9px 10px;
+    width: 260px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+
+select{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 3px;
+    padding: 8px 10px;
+    width: 260px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+}
+
+input[type="text"]:focus, input[type="password"]:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+input[type="submit"]{
+    font-size: 18px;
+    background-color: #F44E61;
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;  
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* tabbar.css */
+.tabbar{
+    width: 100%;
+    height: 10%;
+    border-top: 2px solid #E3561F;
+    /* margin-bottom: 6px; */
+}
+
+.tabbar ul{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; 
+}
+
+.tabbar li{
+    flex: 1;
+}
+
+.tabbar a:link,a:visited{
+    height: 100%;
+    font-weight:bold;
+    color: #E3561F;
+    background-color: #FAEBBA;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+.tabbar a:hover,a:active{
+    background-color:#FADDA5;
+}
+
+/* end */
+
+/* add.css */
+.addlayout{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.addlayout .addnew{
+    margin-top: 15px;
+}
+
+.userinfo{
+    padding-bottom: 20px;
+}
+
+.submitarea{
+    text-align: center;
+}
+
+.info{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.info label{
+    margin-right: 5px;
+}
+
+.el-center{
+    text-align: center;
+    margin-left: 40px;
+}
+
+.respond-msg{
+    margin-top: 15px;
+    color: #E3561F;
+}
+/* end */
+
+/* user viewlayout css */
+.user-view{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.user-view .usercode{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.user-view a:link,a:visited{
+    width: 90px;
+    height: 30px;
+    font-weight:bold;
+    border-radius: 10px;  
+    color: white;
+    background-color: #F44E61;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+.user-view a:hover,a:active{
+    background-color:#FADDA5;
+}
+
+/* viewlayout css */
+.viewlayout{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.viewlayout ul{
+    overflow: auto;
+}
+
+.viewlayout ul.view-list{
+    list-style-type: none;
+}
+
+.viewlayout .view-list .view-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    margin-top: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+.viewlayout .view-list .store-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+
+.viewlayout .view-list .store-info p{
+    padding: 5px;
+}
+
+.viewlayout .store-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.viewlayout .store-img img{
+    width: 64px;
+    height: 64px;
+}
+
+.viewlayout .view-list .view-item .distanceinfo{
+    font-size: 12px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+/* end */
+
+/* modifylayout css */
+.modifylayout{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}   
+
+.modifylayout .modify{
+    margin-top: 15px;
+}
+
+.modifylayout .buttonarea{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.modifylayout .buttonarea input[type="button"]{
+    font-size: 16px;
+    background-color: #F44E61;
+    border: none;
+    border-radius: 5px;  
+    color: white;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+}
+
+.modifylayout .edit-region{
+    background-color: Transparent; 
+    border-style: none;     
+    font-style: italic;
+    color: #2EB8FF;
+    text-decoration: underline;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+/* end */
+
+/* customlayout css */
+.customlayout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.customlayout .customize{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.customlayout .customize .description{
+    padding: 10px;
+    margin: 20px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.customlayout .customize .description .description-text{
+    padding: 8px;
+    margin: 8px;
+    /* color: #E3561F; */
+}
+
+/* end */
+
+/* user.reward css */
+.rewardlayout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.rewardlayout .prize-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FEE3A0;
+    border: 2px solid #786332;
+    border-radius: 16px;
+    width: 250px;
+    margin: 8px;
+}
+.rewardlayout ul{
+    padding: 10px;
+    margin: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+.rewardlayout ul li{
+    list-style-type: none;
+}
+.rewardlayout ul li p{
+    padding: 4px;
+    margin: 4px;
+}
+.rewardlayout ul li .infotext{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+.rewardlayout .rewardtitle{
+    width: 80%;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-family: "华文彩云";
+    color: #786332;
+    border-bottom: 2px solid #786332;
+}
+.rewardlayout .reward{
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.rewardlayout .emptyinfo{
+    margin: 10px;
+    margin-top: 60px;
+    padding: 10px;
+    font-size: 24px;
+    color: #786332;
+}
+.rewardlayout .reward{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.rewardlayout a:link,a:visited{
+    width: 90px;
+    height: 30px;
+    font-weight:bold;
+    border-radius: 10px;  
+    color: white;
+    background-color: #F44E61;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+.rewardlayout a:hover,a:active{
+    background-color:#FADDA5;
+}
+/* end */
+
+/* user.inputcode css */
+.rewardlayout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rewardlayout .inputcode{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 20px;
+}
+.rewardlayout .tips{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.rewardlayout .tips p{
+    padding: 8px;
+    line-height: 30px;
+    text-align: center;
+}
+/* end */
+
+/* usercode css */
+.showcodelayout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.showcodelayout .codetitle{
+    width: 80%;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-family: "华文彩云";
+    color: #786332;
+    border-bottom: 2px solid #786332;
+}
+
+.showcodelayout .code-area{
+    width: 70%;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+}
+.showcodelayout .code-area p{
+    font-size: 22px;
+    padding: 15px;
+}
+.showcodelayout .code-area .usercode-text{
+    padding: 8px;
+    width: 100%;
+    border: 3px solid #786332;
+    border-radius: 15px;
+    background-color: #FEE3A0;
+    text-align: center;
+}
+/* end */

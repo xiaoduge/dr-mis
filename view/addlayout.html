@@ -1,0 +1,52 @@
+{{ define "content" }}
+<div class="addlayout can-scroll">
+    <h1 class="pagetitle">新增门店</h1>
+    <div class="addnew">
+        <form action="/add-store" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
+            <!-- 医生信息的话 是姓名  职称  热线电话  地址 -->
+            <div class="info">
+                <label for="name">名称:</label>
+                <input type="text" name="name" placeholder="名称" required="required">
+            </div>
+            <div class="info">
+                <label for="phone">电话:</label>
+                <input type="text" name="phone" placeholder="电话" required="required">
+            </div>
+            <div class="info">
+                <label for="province">省份:</label>
+                <select name="province" id="provinces" onchange="show_city(this.options[this.options.selectedIndex])">
+                </select>
+            </div>
+            <div class="info">
+                <label for="city">城市:</label>
+                <select name="city" id="citys" onchange="show_county(this.options[this.options.selectedIndex])">
+                </select>
+            </div>
+            <div class="info">
+                <label for="county">区县:</label>
+                <select name="county" id="countys">
+
+                </select>
+            </div>
+            <div class="info">
+                <label for="address">地址:</label>
+                <input type="text" name="address" placeholder="详细地址" required="required">
+            </div>
+            <div class="info">
+                <label for="tag">类别:</label>
+                <input type="text" name="tag" placeholder="类别" required="required">
+            </div>
+            <div class="info el-center">
+                <input type="file" name="image" required="required"> 
+            </div>
+            <div class="">
+                <input type="submit" name="submit" value="提交">
+            </div>
+            <div class="respond-msg">
+                <p>{{ . }}</p>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../static/js/address.js"></script>
+{{ end }}
