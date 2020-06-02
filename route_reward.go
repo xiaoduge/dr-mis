@@ -9,7 +9,6 @@ package main
 
 import (
 	"dr-mis/data"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -24,7 +23,7 @@ func toReward(w http.ResponseWriter, r *http.Request) {
 
 func showPrizeInfo(w http.ResponseWriter, r *http.Request) {
 	usercode := r.FormValue("usercode")
-	prizeList, err := data.QueryPrizeInfo(usercode)
+	prizeList, err := data.QueryRewardInfo(usercode)
 	if err != nil {
 		// 查询出错，直接返回空表
 		redirectNoPrize(w)
@@ -34,7 +33,6 @@ func showPrizeInfo(w http.ResponseWriter, r *http.Request) {
 		redirectNoPrize(w)
 		return
 	}
-	fmt.Println("len: ", prizeList.Len())
 
 	t := parseTemplateFiles("user.main", "user.reward")
 	err = t.Execute(w, *prizeList)
@@ -53,15 +51,14 @@ func redirectNoPrize(w http.ResponseWriter) {
 
 func collectPrize(w http.ResponseWriter, r *http.Request) {
 	usercode := r.FormValue("usercode")
-	fmt.Println("usercode: ", usercode)
-	err := data.DeletePrizesInfo(usercode)
+	err := data.DeleteRewardInfo(usercode)
 	if err != nil {
 		log.Println("领奖时发生了错误：", err)
 		// TODO: 领奖失败处理
 		redirectError(w)
 		return
 	}
-	http.Redirect(w, r, "/toreward", http.StatusFound) //重定向到输入领奖码界面
+	http.Redirect(w, r, "/mis/reward/toreward", http.StatusFound) //重定向到输入领奖码界面
 }
 
 func redirectError(w http.ResponseWriter) {

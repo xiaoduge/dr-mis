@@ -11,7 +11,7 @@ html, body{
 .bgimg{
     width: 100%;
     height: 100%;
-    background: url("../images/background.png") no-repeat center center fixed;
+    background: url("../images/background.jpg") no-repeat center center fixed;
     background-size: 100%;
 }
 
@@ -491,6 +491,39 @@ input[type="submit"]{
     align-items: center;
 }
 
+.showcodelayout .prize-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FEE3A0;
+    border: 2px solid #786332;
+    border-radius: 16px;
+    width: 250px;
+    margin: 8px;
+}
+.showcodelayout ul{
+    padding: 10px;
+    margin: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+.showcodelayout ul li{
+    list-style-type: none;
+}
+.showcodelayout ul li p{
+    padding: 4px;
+    margin: 4px;
+    font-size: 16px;
+}
+.showcodelayout ul li .infotext{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
 .showcodelayout .codetitle{
     width: 80%;
     margin: 10px;
@@ -504,16 +537,13 @@ input[type="submit"]{
 
 .showcodelayout .code-area{
     width: 70%;
-    margin-top: auto;
-    margin-bottom: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-
     padding: 10px;
 }
-.showcodelayout .code-area p{
+.showcodelayout .code-area .codeinfo{
     font-size: 22px;
     padding: 15px;
 }
@@ -524,5 +554,110 @@ input[type="submit"]{
     border-radius: 15px;
     background-color: #FEE3A0;
     text-align: center;
+}
+/* end */
+
+/* prize.add css */
+.prizeaddlayout{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.prizeaddlayout .addprizes{
+    margin-top: 15px;
+}
+/* end */
+
+/* service.menu css */
+.menulayout{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.menulayout .select-area{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.menulayout ul{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+
+}
+
+.menulayout li{
+    flex: 1;
+    padding: 0px;
+    margin: 10px;
+}
+
+.menulayout a:link,a:visited{
+    width: 80px;
+    font-weight:bold;
+    color: white;
+    background-color: #F44E61;
+    text-align:center;
+    padding:20px 40px 20px 40px;
+    border-radius: 18px;
+    text-decoration:none;
+    text-transform:uppercase;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+.menulayout a:hover,a:active{
+    background-color:#FADDA5;
+}
+/* end */
+
+/* prize.view css */
+.prizeviewlayout .query-prizeinfo{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top: 2px solid gray;
+    margin-top: auto;
+}
+
+.prizeviewlayout .query-prizeinfo form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.prizeviewlayout .query-prizeinfo input[type="text"]{
+    width: 180px;
+}
+
+.prizeviewlayout .query-prizeinfo input[type="submit"]{
+    width: 100px;
+}
+
+.prizeviewlayout .prize-list-area{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.prizeviewlayout .prizes-list{
+    width: 80%;
 }
 /* end */

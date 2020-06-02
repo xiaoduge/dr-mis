@@ -10,7 +10,6 @@ package misapi
 import (
 	"dr-mis/data"
 	"dr-mis/geocoding"
-	"fmt"
 	"log"
 	"sort"
 	"strconv"
@@ -55,7 +54,7 @@ func StoreInfo_Address(r *data.RequestByAddress) (*UserViewData, error) {
 	startTime := time.Now()
 	defer func() {
 		elapsed := time.Since(startTime)
-		fmt.Println("程序运行时间: ", elapsed)
+		log.Println("程序运行时间: ", elapsed)
 	}()
 
 	geocod, err := geocoding.Getlocation(r.Address)
@@ -76,7 +75,7 @@ func StoreInfo_Address(r *data.RequestByAddress) (*UserViewData, error) {
 	}
 
 	sort.Sort(storesList)
-	// fmt.Println("排序后的列表。。。。。。。")
+	// log.Println("排序后的列表。。。。。。。")
 	// data.TraverseListInfo(*storesList)
 
 	var viewdata = &UserViewData{}
@@ -98,7 +97,7 @@ func StoreInfo_Location(r *data.RequestByLocation) (*UserViewData, error) {
 	startTime := time.Now()
 	defer func() {
 		elapsed := time.Since(startTime)
-		fmt.Println("程序运行时间: ", elapsed)
+		log.Println("程序运行时间: ", elapsed)
 	}()
 
 	storesList, err := data.CreateList(r.Param)
@@ -113,7 +112,7 @@ func StoreInfo_Location(r *data.RequestByLocation) (*UserViewData, error) {
 		log.Println("calcDistance(origin *geocoding.GeocodResult, list *data.Stores_List) return err: ", err)
 	}
 	sort.Sort(storesList)
-	// fmt.Println("排序后的列表。。。。。。。")
+	// log.Println("排序后的列表。。。。。。。")
 	// data.TraverseListInfo(*storesList)
 	var viewdata = &UserViewData{}
 	viewdata.List = storesList

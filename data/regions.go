@@ -8,7 +8,6 @@
 package data
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 
@@ -33,18 +32,19 @@ type RegionsInfo struct {
 func (p *RegionsInfo) GetProvinceInfo() (err error) {
 	rows, err := Db.Query("select region_fullname, region_code from regions_location where region_level = 0")
 	if err != nil {
-		fmt.Println("GetProvince err: ", err)
+		log.Println("GetProvince err: ", err)
 		return
 	}
 	for rows.Next() {
 		var info RegionInfo
 		err = rows.Scan(&info.Region_fullname, &info.Region_code)
 		if err != nil {
-			fmt.Println("GetProvince row.next() err: ", err)
+			log.Println("GetProvince row.next() err: ", err)
 			return
 		}
 		p.Regions = append(p.Regions, info)
 	}
+	rows.Close()
 	return
 }
 
@@ -61,18 +61,19 @@ func (p *RegionsInfo) GetCityInfo(strCode string) (err error) {
 	}
 	rows, err := Db.Query("select region_fullname, region_code from regions_location where region_belongs = $1", code)
 	if err != nil {
-		fmt.Println("GetProvince err: ", err)
+		log.Println("GetProvince err: ", err)
 		return
 	}
 	for rows.Next() {
 		var info RegionInfo
 		err = rows.Scan(&info.Region_fullname, &info.Region_code)
 		if err != nil {
-			fmt.Println("GetProvince row.next() err: ", err)
+			log.Println("GetProvince row.next() err: ", err)
 			return
 		}
 		p.Regions = append(p.Regions, info)
 	}
+	rows.Close()
 	return
 }
 
@@ -92,9 +93,10 @@ func GetRegionName(code int) (name string, err error) {
 	for rows.Next() {
 		err = rows.Scan(&name)
 		if err != nil {
-			fmt.Println("根据行政号码获取地址名失败1: ", err)
+			log.Println("根据行政号码获取地址名失败1: ", err)
 			return
 		}
 	}
+	rows.Close()
 	return
 }

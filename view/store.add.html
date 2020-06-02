@@ -2,7 +2,7 @@
 <div class="addlayout can-scroll">
     <h1 class="pagetitle">新增门店</h1>
     <div class="addnew">
-        <form action="/add-store" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
+        <form action="/mis/data/add-store" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
             <!-- 医生信息的话 是姓名  职称  热线电话  地址 -->
             <div class="info">
                 <label for="name">名称:</label>
@@ -33,8 +33,8 @@
                 <input type="text" name="address" placeholder="详细地址" required="required">
             </div>
             <div class="info">
-                <label for="tag">类别:</label>
-                <input type="text" name="tag" placeholder="类别" required="required">
+                <label for="mark">活动:</label>
+                <input type="text" name="mark" placeholder="类别" required="required">
             </div>
             <div class="info el-center">
                 <input type="file" name="image" required="required"> 
@@ -48,5 +48,5 @@
         </form>
     </div>
 </div>
-<script src="../static/js/address.js"></script>
+<script src="../../static/js/address.js"></script>
 {{ end }}

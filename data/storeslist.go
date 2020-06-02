@@ -10,7 +10,7 @@ import (
 type RequestParam struct {
 	Userid string `json:"userid"`
 	City   string `json:"city"`
-	Tag    string `json:"tag"`
+	Mark   string `json:"mark"`
 }
 
 //根据地址请求门店列表的参数信息
@@ -44,18 +44,18 @@ func (list Stores_List) Swap(i, j int) {
 func CreateList(r RequestParam) (*Stores_List, error) {
 	var storesList *Stores_List
 	var err error
-	if r.City == "" && r.Tag == "" {
+	if r.City == "" && r.Mark == "" {
 		log.Println("城市和标签全部为空")
 		storesList, err = CreateListAll()
 	} else if r.City == "" {
 		log.Println("根据标签查询列表")
-		storesList, err = CreateListOnTag(r.Tag)
-	} else if r.Tag == "" {
+		storesList, err = CreateListOnTag(r.Mark)
+	} else if r.Mark == "" {
 		log.Println("根据城市查询列表")
 		storesList, err = CreateListOnCity(r.City)
 	} else {
 		log.Println("根据标签和城市查询列表")
-		storesList, err = CreateListOnTC(r.Tag, r.City)
+		storesList, err = CreateListOnTC(r.Mark, r.City)
 	}
 	return storesList, err
 }
@@ -76,25 +76,26 @@ func CreateListAll() (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Tag, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
 		if err != nil {
-			fmt.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
+			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
 		}
 		list = append(list, &s)
 	}
+	rows.Close()
 	return &list, err
 }
 
 /**
  * @Description : 根据标签信息创建一个列表
- * @param       : tag          [标签信息]
+ * @param       : mark          [标签信息]
  * @return      : *Stores_List [列表]
  * @return      : error        [错误信息]
  * @Date        : 2020-05-26 13:48:40
  **/
-func CreateListOnTag(tag string) (*Stores_List, error) {
-	rows, err := Db.Query("select * from storeinfo where store_tag = $1", tag)
+func CreateListOnTag(mark string) (*Stores_List, error) {
+	rows, err := Db.Query("select * from storeinfo where store_tag = $1", mark)
 	if err != nil {
 		log.Println("(list Stores_List) Create() 出错: ", err)
 		return nil, err
@@ -103,13 +104,14 @@ func CreateListOnTag(tag string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Tag, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
 		if err != nil {
-			fmt.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
+			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
 		}
 		list = append(list, &s)
 	}
+	rows.Close()
 	return &list, err
 }
 
@@ -130,27 +132,28 @@ func CreateListOnCity(city string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Tag, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
 		if err != nil {
-			fmt.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
+			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
 		}
 		list = append(list, &s)
 	}
+	rows.Close()
 	return &list, err
 }
 
 /**
  * @Description : 根据标签信息和城市信息创建一个列表
- * @param       : tag          [标签信息]
+ * @param       : mark          [标签信息]
  * @param       : city         [城市]
  * @return      : *Stores_List [列表]
  * @return      : error        [错误信息]
  * @Date        : 2020-05-26 13:50:54
  **/
-func CreateListOnTC(tag, city string) (*Stores_List, error) {
+func CreateListOnTC(mark, city string) (*Stores_List, error) {
 	rows, err := Db.Query("select * from storeinfo where store_tag = $1 and (store_city = $2 or store_province = $3)",
-		tag, city, city)
+		mark, city, city)
 	if err != nil {
 		log.Println("(list Stores_List) Create() 出错: ", err)
 		return nil, err
@@ -159,13 +162,14 @@ func CreateListOnTC(tag, city string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Tag, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
 		if err != nil {
-			fmt.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
+			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
 		}
 		list = append(list, &s)
 	}
+	rows.Close()
 	return &list, err
 }
 

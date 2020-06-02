@@ -9,7 +9,6 @@ package data
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"time"
 )
@@ -25,7 +24,7 @@ type StoreInfo struct {
 	County       string    `json:"store_county"`
 	CountyCode   int       `json:"store_county_code"`
 	Address      string    `json:"store_address"`
-	Tag          string    `json:"store_tag"`
+	Mark         string    `json:"store_tag"`
 	Image        string    `json:"store_img"`
 	Distance     float64   `json:"distance"`
 	StrDistance  string    `json:"strdistance"` //主要用于显示
@@ -67,8 +66,10 @@ func (s *StoreInfo) Create() (err error) {
 	if err != nil {
 		return
 	}
+	defer stmt.Close()
+
 	err = stmt.QueryRow(s.Name, s.Phone, s.Province, s.ProvinceCode, s.City, s.CityCode, s.County, s.CountyCode,
-		s.Address, s.Tag, s.Image, s.CreateTime).Scan(&s.ID)
+		s.Address, s.Mark, s.Image, s.CreateTime).Scan(&s.ID)
 	return
 }
 
@@ -82,7 +83,7 @@ func (s *StoreInfo) QueryStoreInfo() (err error) {
 	store_city, store_city_code, store_county, store_county_code, store_address, store_tag, store_img 
 	from storeinfo where store_name=$1 or store_phone=$2`, s.Name, s.Phone).Scan(&s.ID,
 		&s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode, &s.County, &s.CountyCode,
-		&s.Address, &s.Tag, &s.Image)
+		&s.Address, &s.Mark, &s.Image)
 
 	return
 }
@@ -96,7 +97,7 @@ func (s *StoreInfo) UpdateStoreInfo() (err error) {
 	_, err = Db.Exec(`update storeinfo set store_name = $1, store_phone = $2, store_province = $3, 
 	store_province_code = $4, store_city = $5, store_city_code = $6, store_county = $7, store_county_code = $8,
 	store_address = $9, store_tag = $10 where store_id = $11`, s.Name, s.Phone, s.Province, s.ProvinceCode,
-		s.City, s.CityCode, s.County, s.CountyCode, s.Address, s.Tag, s.ID)
+		s.City, s.CityCode, s.County, s.CountyCode, s.Address, s.Mark, s.ID)
 
 	return
 }
@@ -119,7 +120,7 @@ func QueryStoreImage(id int) (img string, err error) {
  * @return      : err 	[错误信息]
  * @Date        : 2020-05-25 09:52:10
  **/
-func GetAll() (infos []StoreInfo, err error) {
+func GetAllStore() (infos []StoreInfo, err error) {
 	rows, err := Db.Query("select * from storeinfo")
 	if err != nil {
 		log.Println("查询全部门店信息时出错0: ", err)
@@ -129,13 +130,14 @@ func GetAll() (infos []StoreInfo, err error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Tag, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
 		if err != nil {
-			fmt.Println("查询全部门店信息时出错1: ", err)
+			log.Println("查询全部门店信息时出错1: ", err)
 			return
 		}
 		infos = append(infos, s)
 	}
+	rows.Close()
 	return
 }
 

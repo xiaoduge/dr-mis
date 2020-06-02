@@ -8,7 +8,7 @@ function initProvince(){
     $("#provinces").append(strSpace);
     $.ajax({
         type: "GET",
-        url: "/provincesinfo",
+        url: "/mis/data/provincesinfo",
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -34,7 +34,7 @@ function show_city(opt){
     console.log("value: " + value) 
     $.ajax({
         type: "GET",
-        url: "/citysinfo?belongs=" + value,
+        url: "/mis/data/citysinfo?belongs=" + value,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -58,7 +58,7 @@ function show_county(opt){
     console.log("countys value: " + value);
     $.ajax({
         type: "GET",
-        url: "/citysinfo?belongs=" + value,
+        url: "/mis/data/citysinfo?belongs=" + value,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -89,7 +89,7 @@ function initCity(){
 
     $.ajax({
         type: "GET",
-        url: "/citysinfo?belongs=" + code,
+        url: "/mis/data/citysinfo?belongs=" + code,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -116,7 +116,7 @@ function initCounty(){
 
     $.ajax({
         type: "GET",
-        url: "/citysinfo?belongs=" + code,
+        url: "/mis/data/citysinfo?belongs=" + code,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -176,7 +176,7 @@ function add_validate(){
         alert("地址不能为空");
         return false;
     }
-    if(document.forms["modify-form"].tag.value == ""){
+    if(document.forms["modify-form"].mark.value == ""){
         alert("类别不能为空");
         return false;
     }

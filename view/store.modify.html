@@ -2,7 +2,7 @@
 <div class="modifylayout can-scroll">
     <h1 class="pagetitle">信息修改</h1>
     <div class="modify">
-        <form name="modify-form" action="/modify-storeinfo" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
+        <form name="modify-form" action="/mis/data/modify-store" method="POST" enctype="multipart/form-data" onsubmit="return add_validate()">
             <!-- 医生信息的话 是姓名  职称  热线电话  地址 -->
             <div class="info">
                 <label for="name">编号:</label>
@@ -41,8 +41,8 @@
                 <input type="text" name="address" placeholder="详细地址">
             </div>
             <div class="info">
-                <label for="tag">类别:</label>
-                <input type="text" name="tag" placeholder="类别">
+                <label for="mark">类别:</label>
+                <input type="text" name="mark" placeholder="类别">
             </div>
             <div class="info el-center">
                 <input type="file" name="image"> 
@@ -59,6 +59,6 @@
 
     </div>
 </div>
-<script src="../static/js/modify-store.js"></script>
-<script src="../static/js/address.js"></script>
+<script src="../../static/js/modify-store.js"></script>
+<script src="../../static/js/address.js"></script>
 {{ end }}

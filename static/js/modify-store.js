@@ -6,7 +6,7 @@ function queryStore(){
 
     $.ajax({
         type: "GET",
-        url: "/querystoreinfo?storename=" + name + "&storephone=" + phone,
+        url: "/mis/data/query-store?storename=" + name + "&storephone=" + phone,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {
@@ -19,7 +19,7 @@ function queryStore(){
             document.forms["modify-form"].storename.value = result["store_name"];
             document.forms["modify-form"].phone.value = result["store_phone"];
             document.forms["modify-form"].address.value = result["store_address"];
-            document.forms["modify-form"].tag.value = result["store_tag"];
+            document.forms["modify-form"].mark.value = result["store_tag"];
             // 设置省份
             $("#provinces").empty();
             var str = '<option value="' + result["store_province_code"] + '">' + result["store_province"]+'</option>'
@@ -53,7 +53,7 @@ function deleteStore(){
     console.log("id: " + id);
     $.ajax({
         type: "GET",
-        url: "/delete-storeinfo?storeid=" + id,
+        url: "/mis/data/delete-storeinfo?storeid=" + id,
         contentType: 'application/json;charset=utf-8', //设置请求头信息
         dataType: "json",
         success: function (result, status) {

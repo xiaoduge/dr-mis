@@ -60,7 +60,7 @@ func handlerLogin(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		err = verifyUserInfo(w, r) //校验用户信息
 	default:
-		fmt.Printf("Request method cannot handle: %s \n", r.Method)
+		log.Println("Request method cannot handle: ", r.Method)
 		err = errors.New("Request method cannot handle")
 	}
 	if err != nil {
@@ -96,9 +96,10 @@ func verifyUserInfo(w http.ResponseWriter, r *http.Request) error {
 	password := r.FormValue("password")
 
 	if username == "root" && password == "sa" {
-		http.Redirect(w, r, "/add-records", http.StatusFound)
+		// http.Redirect(w, r, "/mis/views/add-store", http.StatusFound)
+		http.Redirect(w, r, "/mis/views/serive-menu", http.StatusFound)
 	} else if username == "admin" && password == "admin" {
-		http.Redirect(w, r, "/toreward", http.StatusFound)
+		http.Redirect(w, r, "/mis/reward/toreward", http.StatusFound)
 	}
 	errMsg := fmt.Sprintf("username: %s, password: %s 无效\n", username, password)
 	_, err := w.Write([]byte(errMsg))
@@ -121,13 +122,13 @@ func handlerAddStore(w http.ResponseWriter, r *http.Request) {
 		err = errors.New("New users: Request method cannot handle")
 	}
 	if err == nil {
-		http.Redirect(w, r, "/add-records?action=succ", http.StatusFound)
+		http.Redirect(w, r, "/mis/views/add-store?action=succ", http.StatusFound)
 	}
 	if err != nil {
 		if err.Error() == "duplicate" {
-			http.Redirect(w, r, "/add-records?action="+err.Error(), http.StatusFound)
+			http.Redirect(w, r, "/mis/views/add-store?action="+err.Error(), http.StatusFound)
 		} else {
-			http.Redirect(w, r, "/add-records?action=fail", http.StatusFound)
+			http.Redirect(w, r, "/mis/views/add-store?action=fail", http.StatusFound)
 		}
 
 	}
@@ -174,7 +175,7 @@ func addStore(w http.ResponseWriter, r *http.Request) (err error) {
 		}
 	}
 	storeinfo.Address = strings.TrimSpace(r.FormValue("address"))
-	storeinfo.Tag = strings.TrimSpace(r.FormValue("tag"))
+	storeinfo.Mark = strings.TrimSpace(r.FormValue("mark"))
 
 	now := time.Now()
 	storeinfo.CreateTime = now
@@ -189,7 +190,6 @@ func addStore(w http.ResponseWriter, r *http.Request) (err error) {
 	filename += fileSuffix
 
 	storeinfo.Image = filename
-	fmt.Printf("storeinfo: %+v \n", storeinfo)
 
 	defer f.Close()
 
@@ -229,16 +229,14 @@ func queryProvinces(w http.ResponseWriter, r *http.Request) {
 		msg.GetProvinceInfo()
 		jsonData, err := json.MarshalIndent(msg, "", "\t\t")
 		if err != nil {
-			fmt.Println("ProvinceInfo to json error: ", err)
+			log.Println("ProvinceInfo to json error: ", err)
 			http.Error(w, "请求方法错误", http.StatusInternalServerError)
 			return
 		}
 		w.Write(jsonData)
-		// w.WriteHeader(http.StatusOK)
-		fmt.Println("请求省份信息")
 
 	} else {
-		fmt.Println("请求方法错误： ", r.Method)
+		log.Println("请求方法错误： ", r.Method)
 		http.Error(w, "请求方法错误", http.StatusInternalServerError)
 	}
 }
@@ -258,22 +256,18 @@ func queryCitys(w http.ResponseWriter, r *http.Request) {
 
 		belongs := r.FormValue("belongs")
 
-		fmt.Println("belongs: " + belongs)
-
 		msg := &data.RegionsInfo{}
 		msg.GetCityInfo(belongs)
 		jsonData, err := json.MarshalIndent(msg, "", "\t\t")
 		if err != nil {
-			fmt.Println("获取城市信息错误: ", err)
+			log.Println("获取城市信息错误: ", err)
 			http.Error(w, "获取城市信息错误", http.StatusInternalServerError)
 			return
 		}
 		w.Write(jsonData)
-		// w.WriteHeader(http.StatusOK)
-		fmt.Println("请求城市信息")
 
 	} else {
-		fmt.Println("请求方法错误： ", r.Method)
+		log.Println("请求方法错误： ", r.Method)
 		http.Error(w, "请求方法错误", http.StatusInternalServerError)
 	}
 }
@@ -295,25 +289,20 @@ func queryStoreInfo(w http.ResponseWriter, r *http.Request) {
 		storeinfo.Name = strings.TrimSpace(r.FormValue("storename"))
 		storeinfo.Phone = strings.TrimSpace(r.FormValue("storephone"))
 
-		fmt.Printf("查询: %s ; %s \n", storeinfo.Name, storeinfo.Phone)
-
 		err := storeinfo.QueryStoreInfo()
 		if err != nil {
-			fmt.Println("没有查询到门店：", err)
+			log.Println("没有查询到门店：", err)
 		}
-		fmt.Printf("storeinfo: %+v \n", storeinfo)
 
 		jsonData, err := json.MarshalIndent(storeinfo, "", "\t\t")
 		if err != nil {
-			fmt.Println("查询门店信息失败: ", err)
+			log.Println("查询门店信息失败: ", err)
 			http.Error(w, "查询门店失败", http.StatusInternalServerError)
 			return
 		}
 		w.Write(jsonData)
-		fmt.Println("查询门店信息")
-
 	} else {
-		fmt.Println("请求方法错误： ", r.Method)
+		log.Println("请求方法错误： ", r.Method)
 		http.Error(w, "请求方法错误", http.StatusInternalServerError)
 	}
 }
@@ -334,10 +323,10 @@ func handlerModifyStoreInfo(w http.ResponseWriter, r *http.Request) {
 		err = errors.New("Modify users: Request method cannot handle")
 	}
 	if err == nil {
-		http.Redirect(w, r, "/modify-records?action=succ", http.StatusFound)
+		http.Redirect(w, r, "/mis/views/modify-store?action=succ", http.StatusFound)
 	}
 	if err != nil {
-		http.Redirect(w, r, "/modify-records?action=fail", http.StatusFound)
+		http.Redirect(w, r, "/mis/views/modify-store?action=fail", http.StatusFound)
 	}
 }
 
@@ -388,7 +377,7 @@ func modifyStoreInfo(w http.ResponseWriter, r *http.Request) (err error) {
 		}
 	}
 	storeinfo.Address = strings.TrimSpace(r.FormValue("address"))
-	storeinfo.Tag = strings.TrimSpace(r.FormValue("tag"))
+	storeinfo.Mark = strings.TrimSpace(r.FormValue("mark"))
 
 	now := time.Now()
 	storeinfo.CreateTime = now
@@ -454,7 +443,6 @@ func deleteStoreInfo(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("content-type", "application/json")             //返回数据格式是json
 
 		storeid, err := strconv.Atoi(r.FormValue("storeid"))
-		fmt.Println("id: ", storeid)
 		if err != nil {
 			return
 		}
@@ -485,14 +473,36 @@ func deleteStoreInfo(w http.ResponseWriter, r *http.Request) {
 
 		jsonData, err := json.MarshalIndent(feedback, "", "\t\t")
 		if err != nil {
-			fmt.Println("删除门店信息失败: ", err)
+			log.Println("删除门店信息失败: ", err)
 			http.Error(w, "删除门店信息失败", http.StatusInternalServerError)
 			return
 		}
 		w.Write(jsonData)
 
 	} else {
-		fmt.Println("请求方法错误： ", r.Method)
+		log.Println("请求方法错误： ", r.Method)
 		http.Error(w, "请求方法错误", http.StatusInternalServerError)
+	}
+}
+
+func setPrizeInfo(w http.ResponseWriter, r *http.Request) {
+	var err error
+	prizeinfo := &data.PrizeInfo{}
+	prizeinfo.PrizeName = r.FormValue("name")
+	prizeinfo.PrizeRemaining, err = strconv.Atoi(r.FormValue("quantity"))
+	if err != nil {
+		log.Println("strconv.Atoi(r.FormValue())返回一个错误：", err)
+		http.Redirect(w, r, "/mis/data/prizes-setting?action=fail", http.StatusFound)
+		return
+	}
+	prizeinfo.PrizeCategory = r.FormValue("category")
+	prizeinfo.Mark = r.FormValue("mark")
+	err = prizeinfo.UpdatePrizeInfo()
+	if err == nil {
+		// log.Println("prizeinfo.UpdatePrizeInfo()成功")
+		http.Redirect(w, r, "/mis/views/add-prize?action=succ", http.StatusFound)
+	} else {
+		log.Println("prizeinfo.UpdatePrizeInfo()失败：", err)
+		http.Redirect(w, r, "/mis/views/add-prize?action=fail", http.StatusFound)
 	}
 }

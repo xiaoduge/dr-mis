@@ -10,7 +10,6 @@ package main
 import (
 	"dr-mis/data"
 	"dr-mis/misapi"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,15 +21,14 @@ import (
  * @param       : w [http.ResponseWriter]
  * @param       : r [*http.Request]
  * @Date        : 2020-05-26 14:40:42
- * @URL         : http://127.0.0.1:8080/api/storeinfo/v1/address?address=ADDRESS&userid=USERID&city=CITY&tag=TAG
+ * @URL         : http://127.0.0.1:8080/api/storeinfo/v1/address?address=ADDRESS&userid=USERID&city=CITY&mark=MARK
  **/
 func getInfoByAddress(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetInfoByAddress API...")
 	var addressInfo data.RequestByAddress
 	addressInfo.Address = r.FormValue("address")
 	addressInfo.Param.Userid = r.FormValue("userid")
 	addressInfo.Param.City = r.FormValue("city")
-	addressInfo.Param.Tag = r.FormValue("tag")
+	addressInfo.Param.Mark = r.FormValue("mark")
 
 	storeList, err := misapi.StoreInfo_Address(&addressInfo)
 
@@ -56,27 +54,26 @@ func getInfoByAddress(w http.ResponseWriter, r *http.Request) {
  * @param       : w [http.ResponseWriter]
  * @param       : r [*http.Request]
  * @Date        : 2020-05-26 14:42:28
- * @URL         : http://127.0.0.1:8080/api/storeinfo/v1/location?location=LAT,LNG&userid=USERID&city=CITY&tag=TAG
+ * @URL         : http://127.0.0.1:8080/api/storeinfo/v1/location?location=LAT,LNG&userid=USERID&city=CITY&mark=MARK
  **/
 func getStoresByLoc(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetInfoByLocation API...")
 	var locationInfo data.RequestByLocation
 	str := r.FormValue("location")
 	strLocation := strings.Split(str, ",")
 	var err error
 	locationInfo.Loc.Lat, err = strconv.ParseFloat(strLocation[0], 64)
 	if err != nil {
-		fmt.Println("获取经纬度有误")
+		log.Println("获取经纬度有误")
 	}
 	locationInfo.Loc.Lng, err = strconv.ParseFloat(strLocation[1], 64)
 	if err != nil {
-		fmt.Println("获取经纬度有误")
+		log.Println("获取经纬度有误")
 	}
 	log.Println("请求经纬度：", r.FormValue("location"))
 
 	locationInfo.Param.Userid = r.FormValue("userid")
 	locationInfo.Param.City = r.FormValue("city")
-	locationInfo.Param.Tag = r.FormValue("tag")
+	locationInfo.Param.Mark = r.FormValue("mark")
 
 	storeList, err := misapi.StoreInfo_Location(&locationInfo)
 	if err != nil {
@@ -117,12 +114,20 @@ func redirectErrorView(w http.ResponseWriter, param data.RequestParam) {
  * @Date        : 2020-05-27 18:22:42
  **/
 func showUserCode(w http.ResponseWriter, r *http.Request) {
+	var err error
 	userid := r.FormValue("userid")
 	usercode := &data.UserCodeInfo{}
 	usercode.GetUserCode(userid)
+	templist, err := data.QueryRewardInfo(usercode.UserList.UserCode)
+	if err != nil {
+		// 查询出错，直接返回空表
+		redirectNoPrize(w)
+		return
+	}
+	usercode.UserList = *templist
 
 	t := parseTemplateFiles("user.main", "user.code")
-	err := t.Execute(w, usercode)
+	err = t.Execute(w, usercode)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

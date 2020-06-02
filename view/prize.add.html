@@ -1,0 +1,32 @@
+{{ define "content" }}
+<div class="prizeaddlayout can-scroll">
+    <h1 class="pagetitle">奖品设置</h1>
+    <div class="addprizes">
+        <form action="/mis/data/prizes-setting" method="POST" enctype="application/x-www-form-urlencoded">
+            <div class="info">
+                <label for="name">名称:</label>
+                <input type="text" name="name" placeholder="名称" required="required">
+            </div>
+            <div class="info">
+                <label for="quantity">数量:</label>
+                <input type="text" name="quantity" placeholder="数量" required="required">
+            </div>
+            <div class="info">
+                <label for="category">类别:</label>
+                <input type="text" name="category" placeholder="类别" required="required">
+            </div>
+            <div class="info">
+                <label for="mark">活动:</label>
+                <input type="text" name="mark" placeholder="为哪一场活动设置" required="required">
+            </div>
+
+            <div class="">
+                <input type="submit" name="submit" value="提交">
+            </div>
+            <div class="respond-msg">
+                <p>{{ . }}</p>
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

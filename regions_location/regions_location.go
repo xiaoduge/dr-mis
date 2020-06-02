@@ -40,7 +40,9 @@ type Response struct {
 func Work() {
 	result := getRegionData()
 	var err error
-	db, err := sql.Open("postgres", "host=111.229.167.91 port=5432 dbname=dcjmis user=dcj password=dcj sslmode=disable")
+	//db, err := sql.Open("postgres", "host=111.229.167.91 port=5432 dbname=dcjmis user=dcj password=dcj sslmode=disable")
+	db, err := sql.Open("postgres", "host=47.102.123.193 port=5432 dbname=safekids user=safekids password=safekids sslmode=disable")
+
 	if err != nil {
 		panic(err)
 	}
@@ -88,8 +90,11 @@ func insertIntoDB(db *sql.DB, result [][]Region) {
 		 values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning region_id`
 	stmt, err := db.Prepare(statement)
 	if err != nil {
+		log.Println("db.Prepare(statement)")
 		return
 	}
+	defer stmt.Close()
+
 	var id int = 0
 	for level, value := range result {
 		for _, v := range value {
@@ -102,7 +107,7 @@ func insertIntoDB(db *sql.DB, result [][]Region) {
 				err = stmt.QueryRow(v.Fullname, region_code, pinyin, v.Name, fmt.Sprintf("%.5f", v.Location.Lat),
 					fmt.Sprintf("%.5f", v.Location.Lng), cidx, 0, 0).Scan(&id)
 				if err != nil {
-					log.Println("insert new error: ", err)
+					log.Println("0 insert new error: ", err)
 					return
 				}
 
@@ -111,7 +116,7 @@ func insertIntoDB(db *sql.DB, result [][]Region) {
 				err = stmt.QueryRow(v.Fullname, region_code, pinyin, v.Name, fmt.Sprintf("%.5f", v.Location.Lat),
 					fmt.Sprintf("%.5f", v.Location.Lng), cidx, 1, belongs).Scan(&id)
 				if err != nil {
-					log.Println("insert new error: ", err)
+					log.Println("1 insert new error: ", err)
 					return
 				}
 
@@ -120,7 +125,7 @@ func insertIntoDB(db *sql.DB, result [][]Region) {
 				err = stmt.QueryRow(v.Fullname, region_code, pinyin, v.Name, fmt.Sprintf("%.5f", v.Location.Lat),
 					fmt.Sprintf("%.5f", v.Location.Lng), cidx, 2, belongs).Scan(&id)
 				if err != nil {
-					log.Println("insert new error: ", err)
+					log.Println("2 insert new error: ", err)
 					return
 				}
 
@@ -128,7 +133,6 @@ func insertIntoDB(db *sql.DB, result [][]Region) {
 				log.Println("行政级别错误")
 			}
 		}
-		fmt.Println("id: ", id)
 	}
 
 }

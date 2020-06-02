@@ -1,13 +1,28 @@
 {{ define "content" }}
 <div class="showcodelayout">
-    <h1 class="codetitle">领奖码</h1>
+    <h1 class="codetitle">奖品</h1>
     <div class="code-area">
         {{ if .Valid }}
+        <div class="can-scroll">
+            <ul class="view-list">
+                {{ range .UserList.List }}
+                <li>
+                    <div class="prize-info">
+                        <div class="infotext">
+                            <p>{{ .PrizeName }}</p>
+                            <p>{{ .Time }}</p>
+                        </div>
+                    </div>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+
         <p>您的领奖码</p>
-        <p class="usercode-text">{{ .UserCode }}</p>
+        <p class="usercode-text codeinfo">{{ .UserList.UserCode }}</p>
         {{ else }}
-        <p>还没有领奖码哦！</p>
-        <p>加油哦！</p>
+        <p class="codeinfo">还没有领奖码哦！</p>
+        <p class="codeinfo">加油哦！</p>
         {{ end }}
     </div>
 </div>

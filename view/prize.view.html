@@ -1,0 +1,30 @@
+{{ define "content" }}
+<div class="prizeviewlayout viewlayout">
+    <h1 class="pagetitle">门店信息</h1>
+
+    <div class="prize-list-area can-scroll">
+        <ul class="view-list prizes-list">
+            {{ range . }}
+            <li class="view-item">
+                <div class="store-info">
+                    <p>名称: {{ .PrizeName }}</p>
+                    <p>数量: {{ .PrizeQuantity }}</p>
+                    <p>剩余: {{ .PrizeRemaining }}</p>
+                    <p>类别: {{ .PrizeCategory }}</p>
+                    <p>活动: {{ .Mark }}</p>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+
+    <div class="query-prizeinfo">
+        <form action="/mis/views/view-prize-mark" method="POST" enctype="application/x-www-form-urlencoded">
+            <div class="info">
+                <input type="text" name="mark" placeholder="查询某场活动的奖品" required="required">
+                <input type="submit" name="submit" value="提交">
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

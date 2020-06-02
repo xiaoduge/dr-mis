@@ -1,7 +1,7 @@
 /**********************************************************
  * @Author       dcj
  * @Date         2020-05-27 11:01:27
- * @Description  提供用户信息操作接口
+ * @Description  提供创建用户、获取领奖码的接口
  * @Version      V0.0.1
  **********************************************************/
 
@@ -24,12 +24,13 @@ type UserInfo struct {
 	Userid   string
 	UserName string
 	UserCode string
+	Mark     string //活动标识
 	Time     time.Time
 }
 
 type UserCodeInfo struct {
-	UserCode string
 	Valid    bool
+	UserList UserPrizeList
 }
 
 /**
@@ -61,15 +62,16 @@ func (user *UserInfo) MustCreate() error {
  * @Date        : 2020-05-27 09:42:22
  **/
 func (user *UserInfo) Create() (err error) {
-	statement := `insert into userinfo (user_id, user_name,  user_code, create_time) 
-	values ($1, $2, $3, $4) returning id`
+	statement := `insert into userinfo (user_id, user_name,  user_code, mark, create_time) 
+	values ($1, $2, $3, $4, $5) returning id`
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
 		log.Println("(user *UserInfo) Create(); Db.Prepare() 发生错误: ", err)
 		return
 	}
+	defer stmt.Close()
 
-	err = stmt.QueryRow(user.Userid, user.UserName, user.UserCode, user.Time).Scan(&user.ID)
+	err = stmt.QueryRow(user.Userid, user.UserName, user.UserCode, user.Mark, user.Time).Scan(&user.ID)
 	if err != nil {
 		log.Println("(user *UserInfo) Create(); stmt.QueryRow() 发生错误: ", err)
 	}
@@ -77,13 +79,14 @@ func (user *UserInfo) Create() (err error) {
 }
 
 /**
- * @Description : 检查用户是否存在, 存在获取code
+ * @Description : 根据用户id和活动标识mark，检查用户是否存在, 存在获取code
  * @return      : bool  [不存在返回false, 存在返回true]
  * @return      : error [错误]
  * @Date        : 2020-05-27 09:43:41
  **/
 func (user *UserInfo) Check() (bool, error) {
-	err := Db.QueryRow(`select user_code from userinfo where user_id=$1`, user.Userid).Scan(&user.UserCode)
+	err := Db.QueryRow(`select user_code from userinfo where user_id=$1 and mark=$2`,
+		user.Userid, user.Mark).Scan(&user.UserCode)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return false, nil
@@ -131,9 +134,22 @@ func (user *UserInfo) GenerateCode() (err error) {
  **/
 func (code *UserCodeInfo) GetUserCode(userid string) {
 	code.Valid = false
-	err := Db.QueryRow(`select user_code from userinfo where user_id=$1`, userid).Scan(&code.UserCode)
+	// err := Db.QueryRow(`select user_code from awardinfo where user_id=$1`, userid).Scan(&code.UserCode)
+	err := Db.QueryRow(`select user_code from awardinfo where user_id=$1`, userid).Scan(&code.UserList.UserCode)
 	if err != nil {
 		return
 	}
 	code.Valid = true
+}
+
+/**
+ * @Description : 通过userid获取usercode
+ * @param       : userid [用户唯一标识	]
+ * @return      : code   [用户领奖码]
+ * @return      : err    [error]
+ * @Date        : 2020-06-01 14:16:09
+ **/
+func QueryUserCode(userid string) (code string, err error) {
+	err = Db.QueryRow(`select user_code from userinfo where user_id=$1`, userid).Scan(&code)
+	return
 }
