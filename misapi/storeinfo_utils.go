@@ -19,6 +19,7 @@ import (
 type UserViewData struct {
 	List   *data.Stores_List
 	Userid string
+	Mark   string
 }
 
 /**
@@ -81,6 +82,7 @@ func StoreInfo_Address(r *data.RequestByAddress) (*UserViewData, error) {
 	var viewdata = &UserViewData{}
 	viewdata.List = storesList
 	viewdata.Userid = r.Param.Userid
+	viewdata.Mark = r.Param.Mark
 
 	return viewdata, err
 }
@@ -117,6 +119,7 @@ func StoreInfo_Location(r *data.RequestByLocation) (*UserViewData, error) {
 	var viewdata = &UserViewData{}
 	viewdata.List = storesList
 	viewdata.Userid = r.Param.Userid
+	viewdata.Mark = r.Param.Mark
 
 	return viewdata, err
 }

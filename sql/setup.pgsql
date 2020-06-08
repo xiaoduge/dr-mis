@@ -44,45 +44,45 @@ create table prizesinfo(
 -- 用户信息记录表
 create table userinfo(
     id serial primary key,
-    user_id text not null unique,
+    user_id text not null,
     user_name text not null,
     user_code text not null unique,
     mark text not null,
     create_time timestamp not null
 );
 
-
-
 -- 待领取的奖品信息表
 create table awardinfo(
     id serial primary key,
-    user_id text references userinfo(user_id),
+    user_id text not null,
     user_name text not null,
     user_code text references userinfo(user_code),
     prize_name text not null,
     prize_id integer references prizesinfo(id),
     prize_status integer not null, 
     prize_category text not null,
+    mark text not null,
     created_time timestamp not null
 );
 
 -- 已经领取的奖品信息表
 create table awardedinfo(
     id serial primary key,
-    user_id text references userinfo(user_id),
+    user_id text not null,
     user_name text not null,
     user_code text references userinfo(user_code),
     prize_name text not null,
     prize_id integer references prizesinfo(id),
     prize_status integer not null, 
     prize_category text not null,
+    mark text not null,
     expired_time timestamp not null
 );
 
 -- 游戏情况记录表
 create table gamerecord(
     id serial primary key,
-    user_id text references userinfo(user_id),
+    user_id text not null,
     user_name text not null,
     score integer not null,
     spending integer not null,
@@ -94,7 +94,7 @@ create table gamerecord(
 -- 参与情况记录
 create table playinfo(
     id serial primary key,
-    user_id text references userinfo(user_id),
+    user_id text not null,
     user_name text not null,
     play_times integer not null,
     draw_times integer not null,

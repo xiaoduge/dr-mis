@@ -198,7 +198,7 @@ func handleDrawData(l *LotteryInfo, result *DrawResult, category string) {
 		result.Comment = "获取指定奖品名称时发生错误"
 		return
 	}
-	usercode, err := QueryUserCode(l.Userid)
+	usercode, err := QueryUserCode(l.Userid, l.Mark)
 	if err != nil {
 		result.Status = "error"
 		result.Comment = "获取用户编码时发生错误"
@@ -213,6 +213,7 @@ func handleDrawData(l *LotteryInfo, result *DrawResult, category string) {
 		PrizeId:       id,
 		PrizeStatus:   1,
 		PrizeCategory: category,
+		Mark:          l.Mark,
 		Time:          time.Now(),
 	}
 	err = commitDrawData(l, id, newScore, rewardinfo)
@@ -270,7 +271,7 @@ func commitDrawData(l *LotteryInfo, prizeid, newScore int, p *RewardInfo) (err e
 	}
 	//新建一条待领取的奖品信息
 	statement := `insert into awardinfo (user_id, user_name, user_code, prize_name, prize_id, prize_status, 
-		prize_category, created_time) values ($1, $2, $3, $4, $5, $6, $7, $8)`
+		prize_category, mark, created_time) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
 		log.Println("在将抽奖结果写入数据库的事务中，新建待领奖记录时(Db.Prepare)出错: ", err)
@@ -279,7 +280,7 @@ func commitDrawData(l *LotteryInfo, prizeid, newScore int, p *RewardInfo) (err e
 	}
 	defer stmt.Close()
 	_, err = tx.Stmt(stmt).Exec(p.Userid, p.UserName, p.UserCode, p.PrizeName, p.PrizeId,
-		p.PrizeStatus, p.PrizeCategory, p.Time)
+		p.PrizeStatus, p.PrizeCategory, p.Mark, p.Time)
 	if err != nil {
 		log.Println("在将抽奖结果写入数据库的事务中，新建待领奖记录时出错: ", err)
 		tx.Rollback()

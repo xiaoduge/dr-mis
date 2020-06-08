@@ -13,6 +13,12 @@ import (
 	"net/http"
 )
 
+/**
+ * @Description : 使用admin登录后，进入领奖页面
+ * @param       : w   [http.ResponseWriter]
+ * @param       : r   [*http.Request]
+ * @Date        : 2020-06-02 15:33:51
+ **/
 func toReward(w http.ResponseWriter, r *http.Request) {
 	t := parseTemplateFiles("user.main", "user.inputcode")
 	err := t.Execute(w, nil)
@@ -21,6 +27,12 @@ func toReward(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/**
+ * @Description : 输入领奖码后，现实待领取的奖品
+ * @param       : w   [http.ResponseWriter]
+ * @param       : r   [*http.Request]
+ * @Date        : 2020-06-02 15:31:17
+ **/
 func showPrizeInfo(w http.ResponseWriter, r *http.Request) {
 	usercode := r.FormValue("usercode")
 	prizeList, err := data.QueryRewardInfo(usercode)
@@ -49,6 +61,12 @@ func redirectNoPrize(w http.ResponseWriter) {
 	}
 }
 
+/**
+ * @Description : 确定领奖，更新数据库信息
+ * @param       : w   [http.ResponseWriter]
+ * @param       : r   [*http.Request]
+ * @Date        : 2020-06-02 13:38:31
+ **/
 func collectPrize(w http.ResponseWriter, r *http.Request) {
 	usercode := r.FormValue("usercode")
 	err := data.DeleteRewardInfo(usercode)

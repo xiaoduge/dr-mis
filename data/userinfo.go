@@ -132,24 +132,28 @@ func (user *UserInfo) GenerateCode() (err error) {
  * @return      : parameter [description]
  * @Date        : 2020-05-27 18:06:23
  **/
-func (code *UserCodeInfo) GetUserCode(userid string) {
+func (code *UserCodeInfo) GetUserCode(userid, mark string) {
 	code.Valid = false
 	// err := Db.QueryRow(`select user_code from awardinfo where user_id=$1`, userid).Scan(&code.UserCode)
-	err := Db.QueryRow(`select user_code from awardinfo where user_id=$1`, userid).Scan(&code.UserList.UserCode)
+	err := Db.QueryRow(`select user_code from awardinfo where user_id=$1 and mark=$2`,
+		userid, mark).Scan(&code.UserList.UserCode)
 	if err != nil {
+		log.Printf("获取用户码失败: %s; %s; \n", userid, mark)
 		return
 	}
 	code.Valid = true
 }
 
 /**
- * @Description : 通过userid获取usercode
- * @param       : userid [用户唯一标识	]
+ * @Description : 通过userid和活动代号获取usercode
+ * @param       : userid [用户唯一标识]
+ * @param       : mark   [活动代码]
  * @return      : code   [用户领奖码]
  * @return      : err    [error]
  * @Date        : 2020-06-01 14:16:09
  **/
-func QueryUserCode(userid string) (code string, err error) {
-	err = Db.QueryRow(`select user_code from userinfo where user_id=$1`, userid).Scan(&code)
+func QueryUserCode(userid, mark string) (code string, err error) {
+	err = Db.QueryRow(`select user_code from userinfo where user_id=$1 and mark=$2`,
+		userid, mark).Scan(&code)
 	return
 }

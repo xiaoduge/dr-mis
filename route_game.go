@@ -97,6 +97,8 @@ func clientGetData(w http.ResponseWriter, r *http.Request) {
 		UserName: r.FormValue("username"),
 		Mark:     r.FormValue("mark"),
 	}
+	log.Printf("Data From Client: %+v \n", dataToClient)
+
 	dataToClient.GetData()
 
 	jsonData, err := json.MarshalIndent(dataToClient, "", "\t\t")

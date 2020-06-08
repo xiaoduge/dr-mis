@@ -22,6 +22,7 @@ type RewardInfo struct {
 	PrizeId       int
 	PrizeStatus   int
 	PrizeCategory string
+	Mark          string
 	Time          time.Time
 }
 
@@ -49,7 +50,7 @@ func (list UserPrizeList) Len() int {
  **/
 func (p *RewardInfo) Insert() (err error) {
 	statement := `insert into awardinfo (user_id, user_name, user_code, prize_name, prize_id, prize_status, 
-		prize_category, created_time) values ($1, $2, $3, $4, $5, $6, $7, $8) returning id`
+		prize_category, mark, created_time) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
 		return
@@ -57,7 +58,7 @@ func (p *RewardInfo) Insert() (err error) {
 	defer stmt.Close()
 
 	err = stmt.QueryRow(p.Userid, p.UserName, p.UserCode, p.PrizeName, p.PrizeId,
-		p.PrizeStatus, p.PrizeCategory, p.Time).Scan(&p.ID)
+		p.PrizeStatus, p.PrizeCategory, p.Mark, p.Time).Scan(&p.ID)
 	return
 }
 
@@ -68,7 +69,7 @@ func (p *RewardInfo) Insert() (err error) {
  **/
 func (p *RewardInfo) InsertExpired() (err error) {
 	statement := `insert into awardedinfo (user_id, user_name, user_code, prize_name, prize_id, prize_status, 
-		prize_category, expired_time) values ($1, $2, $3, $4, $5, $6, $7, $8) returning id`
+		prize_category, mark, expired_time) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
 		log.Println("插入已领取奖品信息表时发生了错误: ", err)
@@ -77,7 +78,7 @@ func (p *RewardInfo) InsertExpired() (err error) {
 	defer stmt.Close()
 
 	err = stmt.QueryRow(p.Userid, p.UserName, p.UserCode, p.PrizeName, p.PrizeId,
-		p.PrizeStatus, p.PrizeCategory, p.Time).Scan(&p.ID)
+		p.PrizeStatus, p.PrizeCategory, p.Mark, p.Time).Scan(&p.ID)
 	return
 }
 
@@ -106,12 +107,13 @@ func DeleteRewardInfo(usercode string) (err error) {
 
 /**
  * @Description : 领奖时，先保存奖品信息，已备写入到已领取的表中
+ * @param       : usercode       [用户奖品码]
  * @return      : err [error]
  * @Date        : 2020-05-27 08:59:18
  **/
 func GetRewardInfo(usercode string) (*RewardInfosList, error) {
 	var infos RewardInfosList
-	rows, err := Db.Query(`select user_id, user_name, prize_name, prize_id, prize_category
+	rows, err := Db.Query(`select user_id, user_name, prize_name, prize_id, prize_category, mark
 	 					   from awardinfo where user_code = $1`, usercode)
 	if err != nil {
 		log.Println("GetRewardInfo(); Db.Query() 查询出错: ", err)
@@ -123,7 +125,7 @@ func GetRewardInfo(usercode string) (*RewardInfosList, error) {
 		info.Time = time.Now()
 		info.UserCode = usercode
 
-		err = rows.Scan(&info.Userid, &info.UserName, &info.PrizeName, &info.PrizeId, &info.PrizeCategory)
+		err = rows.Scan(&info.Userid, &info.UserName, &info.PrizeName, &info.PrizeId, &info.PrizeCategory, &info.Mark)
 		if err != nil {
 			log.Println("GetRewardInfo(); rows.Scan() 获取出错: ", err)
 			return nil, err

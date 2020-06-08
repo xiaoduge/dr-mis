@@ -40,8 +40,8 @@ type Response struct {
 func Work() {
 	result := getRegionData()
 	var err error
-	//db, err := sql.Open("postgres", "host=111.229.167.91 port=5432 dbname=dcjmis user=dcj password=dcj sslmode=disable")
-	db, err := sql.Open("postgres", "host=47.102.123.193 port=5432 dbname=safekids user=safekids password=safekids sslmode=disable")
+	db, err := sql.Open("postgres", "host=111.229.167.91 port=5432 dbname=dcjmis user=dcj password=dcj sslmode=disable")
+	//db, err := sql.Open("postgres", "host=47.102.123.193 port=5432 dbname=safekids user=safekids password=safekids sslmode=disable")
 
 	if err != nil {
 		panic(err)

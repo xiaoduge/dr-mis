@@ -116,8 +116,9 @@ func redirectErrorView(w http.ResponseWriter, param data.RequestParam) {
 func showUserCode(w http.ResponseWriter, r *http.Request) {
 	var err error
 	userid := r.FormValue("userid")
+	mark := r.FormValue("mark")
 	usercode := &data.UserCodeInfo{}
-	usercode.GetUserCode(userid)
+	usercode.GetUserCode(userid, mark) //根据用户id和活动代号获取用户码
 	templist, err := data.QueryRewardInfo(usercode.UserList.UserCode)
 	if err != nil {
 		// 查询出错，直接返回空表
