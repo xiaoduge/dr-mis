@@ -8,6 +8,7 @@
 package data
 
 import (
+	"dr-mis/geocoding"
 	"errors"
 	"log"
 	"time"
@@ -28,6 +29,8 @@ type StoreInfo struct {
 	Image        string    `json:"store_img"`
 	Distance     float64   `json:"distance"`
 	StrDistance  string    `json:"strdistance"` //主要用于显示
+	Loc_lat      float64   `json:"loc_lat"`     // loc_lat double precision,
+	Loc_lng      float64   `json:"loc_lng"`     // loc_lng double precision,
 	CreateTime   time.Time `json:"created_time"`
 }
 
@@ -59,9 +62,21 @@ func (s *StoreInfo) Create() (err error) {
 		return
 	}
 
+	// NOTE:计算坐标
+	address := s.Province + s.City + s.County + s.Address
+	geocod, err := geocoding.Getlocation(address)
+	if err != nil {
+		log.Println("新建门店信息时获取门店坐标失败: ", err)
+		s.Loc_lat = -1.0
+		s.Loc_lng = -1.0
+	} else {
+		s.Loc_lat = geocod.Loc.Lat
+		s.Loc_lng = geocod.Loc.Lng
+	}
+
 	statement := `insert into storeinfo (store_name, store_phone, store_province, store_province_code, store_city,
-		store_city_code, store_county, store_county_code, store_address, store_tag, store_img, created_time) 
-		values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning store_id`
+		store_city_code, store_county, store_county_code, store_address, store_tag, store_img, loc_lat, loc_lng,
+		created_time) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) returning store_id`
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
 		return
@@ -69,7 +84,7 @@ func (s *StoreInfo) Create() (err error) {
 	defer stmt.Close()
 
 	err = stmt.QueryRow(s.Name, s.Phone, s.Province, s.ProvinceCode, s.City, s.CityCode, s.County, s.CountyCode,
-		s.Address, s.Mark, s.Image, s.CreateTime).Scan(&s.ID)
+		s.Address, s.Mark, s.Image, s.Loc_lat, s.Loc_lng, s.CreateTime).Scan(&s.ID)
 	return
 }
 
@@ -94,10 +109,22 @@ func (s *StoreInfo) QueryStoreInfo() (err error) {
  * @Date        : 2020-05-26 10:06:11
  **/
 func (s *StoreInfo) UpdateStoreInfo() (err error) {
+	// NOTE:计算坐标
+	address := s.Province + s.City + s.County + s.Address
+	geocod, err := geocoding.Getlocation(address)
+	if err != nil {
+		log.Println("新建门店信息时获取门店坐标失败: ", err)
+		s.Loc_lat = -1.0
+		s.Loc_lng = -1.0
+	} else {
+		s.Loc_lat = geocod.Loc.Lat
+		s.Loc_lng = geocod.Loc.Lng
+	}
+
 	_, err = Db.Exec(`update storeinfo set store_name = $1, store_phone = $2, store_province = $3, 
 	store_province_code = $4, store_city = $5, store_city_code = $6, store_county = $7, store_county_code = $8,
-	store_address = $9, store_tag = $10 where store_id = $11`, s.Name, s.Phone, s.Province, s.ProvinceCode,
-		s.City, s.CityCode, s.County, s.CountyCode, s.Address, s.Mark, s.ID)
+	store_address = $9, store_tag = $10, store_img = $11, loc_lat = $12, loc_lng = $13 where store_id = $14`, s.Name, s.Phone, s.Province, s.ProvinceCode,
+		s.City, s.CityCode, s.County, s.CountyCode, s.Address, s.Mark, s.Image, s.Loc_lat, s.Loc_lng, s.ID)
 
 	return
 }
@@ -130,7 +157,7 @@ func GetAllStore() (infos []StoreInfo, err error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.Loc_lat, &s.Loc_lng, &s.CreateTime)
 		if err != nil {
 			log.Println("查询全部门店信息时出错1: ", err)
 			return

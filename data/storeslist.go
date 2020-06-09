@@ -76,7 +76,7 @@ func CreateListAll() (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.Loc_lat, &s.Loc_lng, &s.CreateTime)
 		if err != nil {
 			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
@@ -104,7 +104,7 @@ func CreateListOnTag(mark string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.Loc_lat, &s.Loc_lng, &s.CreateTime)
 		if err != nil {
 			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
@@ -132,7 +132,7 @@ func CreateListOnCity(city string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.Loc_lat, &s.Loc_lng, &s.CreateTime)
 		if err != nil {
 			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err
@@ -162,7 +162,7 @@ func CreateListOnTC(mark, city string) (*Stores_List, error) {
 	for rows.Next() {
 		var s StoreInfo
 		err = rows.Scan(&s.ID, &s.Name, &s.Phone, &s.Province, &s.ProvinceCode, &s.City, &s.CityCode,
-			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.CreateTime)
+			&s.County, &s.CountyCode, &s.Address, &s.Mark, &s.Image, &s.Loc_lat, &s.Loc_lng, &s.CreateTime)
 		if err != nil {
 			log.Println("(list Stores_List) Create(); rows.Next() 出错: ", err)
 			return nil, err

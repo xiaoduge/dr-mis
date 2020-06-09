@@ -77,7 +77,7 @@ func Getlocation(address string) (*GeocodResult, error) {
 		log.Println("func Getlocation(address string) (*GeocodResult, error) Status:", geocod.Status)
 		return nil, errors.New("Geocoding Return Error")
 	}
-	log.Printf("获取到的地址经纬度为：(%f, %f) \n", geocod.Result.Loc.Lng, geocod.Result.Loc.Lat)
+	// log.Printf("获取到的地址经纬度为：(%f, %f) \n", geocod.Result.Loc.Lng, geocod.Result.Loc.Lat)
 	return &geocod.Result, nil
 }
 

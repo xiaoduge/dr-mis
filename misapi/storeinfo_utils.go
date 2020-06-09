@@ -30,14 +30,24 @@ type UserViewData struct {
  **/
 func calcDistance(origin geocoding.Location, list *data.Stores_List) error {
 	for _, info := range *list {
-		address := info.Province + info.City + info.County + info.Address
-		geocod, err := geocoding.Getlocation(address)
-		if err != nil {
-			log.Println("calcDistance(origin *geocoding.GeocodResult, list *data.Stores_List): 获取地址失败")
-			return err
+		var loc geocoding.Location
+		//如果门店信息中经纬度坐标无效，则重新获取
+		if info.Loc_lat == -1.0 || info.Loc_lng == -1.0 {
+			address := info.Province + info.City + info.County + info.Address
+			geocod, err := geocoding.Getlocation(address)
+			if err != nil {
+				log.Println("calcDistance(origin *geocoding.GeocodResult, list *data.Stores_List): 获取地址失败")
+				return err
+			}
+			loc = geocod.Loc
+		} else {
+			loc = geocoding.Location{
+				Lat: info.Loc_lat,
+				Lng: info.Loc_lng,
+			}
 		}
 
-		info.Distance = geocoding.GetDistance(origin, geocod.Loc)
+		info.Distance = geocoding.GetDistance(origin, loc)
 		info.StrDistance = strconv.FormatFloat(info.Distance, 'f', 1, 64)
 	}
 	return nil
@@ -70,6 +80,7 @@ func StoreInfo_Address(r *data.RequestByAddress) (*UserViewData, error) {
 		return nil, err
 	}
 	// data.TraverseList(*storesList)
+
 	err = calcDistance(geocod.Loc, storesList)
 	if err != nil {
 		log.Println("calcDistance(origin *geocoding.GeocodResult, list *data.Stores_List) return err: ", err)

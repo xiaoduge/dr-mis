@@ -166,7 +166,6 @@ func handleDrawResult(l *LotteryInfo, result *DrawResult, iWin int) {
 		handleDrawData(l, result, "A")
 	case 2:
 		handleDrawData(l, result, "B")
-		UpdateCanWinStatus(l.Userid, l.Mark, 0) //中过特殊奖的，设置不能再中奖了
 	default:
 	}
 }
@@ -226,6 +225,10 @@ func handleDrawData(l *LotteryInfo, result *DrawResult, category string) {
 	result.Result = "1"
 	result.Prize = prizename
 	result.Score = newScore
+
+	if category == "B" {
+		UpdateCanWinStatus(l.Userid, l.Mark, 0) //中过特殊奖的，设置不能再中奖了
+	}
 }
 
 /**

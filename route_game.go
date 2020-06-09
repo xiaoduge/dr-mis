@@ -43,6 +43,8 @@ func lotteryDraw(w http.ResponseWriter, r *http.Request) {
 		returnDrawError(w)
 		return
 	}
+	log.Printf("抽奖结果: %+v \n", result)
+
 	returnDrawSuccess(w, result)
 }
 

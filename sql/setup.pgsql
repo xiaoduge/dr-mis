@@ -18,6 +18,9 @@ create table storeinfo(
     store_tag text not null,
     store_img text not null unique,
 
+    loc_lat double precision,
+    loc_lng double precision,
+    
     created_time timestamp not null
 )
 
